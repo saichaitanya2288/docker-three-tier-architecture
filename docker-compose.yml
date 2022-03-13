@@ -3,6 +3,12 @@ version: "3.7"
 services:
   api:
     build: ./backend
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
     environment:
       - CONNECTION_STRING=postgres://demo_user:demo_user@db/demo_db
     depends_on:
@@ -13,6 +19,12 @@ services:
 
   webapp:
     build: ./frontend
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
     environment:
       - API_URL=http://api:3001/data
     depends_on:
@@ -24,6 +36,12 @@ services:
 
   db:
     image: postgres:11.2-alpine
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
     environment:
       POSTGRES_USER: demo_user
       POSTGRES_PASSWORD: demo_user
